@@ -1,0 +1,197 @@
+{% extends 'app/base.html' %}
+
+{% load static %}
+
+{% block title %}All Posts{% endblock title %}
+
+{% block styles %}
+<style>
+  /* styles for item cards */
+  .item {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    padding: 15px;
+    background-color: #fff;
+    transition: transform 0.3s ease-out;
+    border-radius: 10px;
+  }
+
+  .item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .item img {
+    object-fit: cover;
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+
+  .item .fw-bold {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .btn {
+    text-decoration: none !important;
+  }
+
+  /* styles for pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .page-link {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 0 5px;
+  }
+
+  .page-link:hover {
+    background-color: #f8f9fa;
+    color: #333;
+    border-color: #dee2e6;
+  }
+
+  .page-link.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+  }
+
+  .page-item.disabled .page-link {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+</style>
+{% endblock styles %}
+
+{% block main-content %}
+<div class="container my-5">
+  <h2 class="text-center my-3">Recent Posts</h2>
+  <div class="row">
+
+    {% if lost %}
+    {% for lost in lost %}
+
+    <div class="col-sm-6 col-md-3 mb-4">
+
+      <a href="{% url 'details' lost.id %}" class="btn">
+        <div class="item">
+          <img src="{{lost.product_image.url}}" style="height: 300px; width: 200px;" alt="image"
+            class="img-thumbnail img-fluid object-fit-sm-contain rounded" />
+          <div class="fw-bold">{{lost.title}}</div>
+          <div class="fw-bold">
+            <!-- {{lost.location}} -->
+            <small style="color: green" class="fw-dark">{{lost.user}}</small>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-md-12 text-center">
+      <h3>No Lost Posts Yet.</h3>
+    </div>
+    {% endif %}
+
+    {% if found %}
+    {% for found in found %}
+    <div class="col-sm-6 col-md-4 mb-4">
+      <a href="{% url 'details' found.id %}" class="btn">
+        <div class="item">
+          <img src="{{found.product_image.url}}" height="250" alt="image" class="" />
+          <div class="fw-bold">{{found.title}}</div>
+          <div class="fw-bold">
+            {{found.location}}
+            <small style="color: green" class="fw-dark">{{found.user}}</small>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    <h2>No Found Posts Yet.</h2>
+    {% endif %}
+
+  </div>
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      {% if lost_posts.has_other_pages %}
+      {% if lost_posts.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ lost_posts.previous_page_number }}">Previous</a>
+      </li>
+      {% endif %}
+      {% for i in lost_posts.paginator.page_range %}
+      {% if lost_posts.number == i %}
+      <li class="page-item active">
+        <a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a>
+      </li>
+      {% else %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+      {% if lost_posts.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ lost_posts.next_page_number }}">Next</a>
+      </li>
+      {% endif %}
+      {% endif %}
+      {% if found_posts.has_other_pages %}
+      {% if found_posts.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ found_posts.previous_page_number }}">Previous</a>
+      </li>
+      {% endif %}
+      {% for i in found_posts.paginator.page_range %}
+      {% if found_posts.number == i %}
+      <li class="page-item active">
+        <a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a>
+      </li>
+      {% else %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+      {% if found_posts.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ found_posts.next_page_number }}">Next</a>
+      </li>
+      {% endif %}
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+{% endblock main-content %}
+
+
+{% block script-content %}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(document).ready(function () {
+    // Handle successful form submission
+    {% if messages %}
+    {% for message in messages %}
+    alert('{{ message }}');
+    {% endfor %}
+    {% endif %}
+  });
+</script>
+
+{% endblock script-content %}

@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Profile{% endblock title %} 
+{% block main-content %}
+<div class="container" style="text-align: center">
+    <a href="{% url 'profile' %}"><button class="btn btn-warning">Back to Profile</button></a>
+    <h2>Edit Profile </h2>
+    <br>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input class="btn btn-primary" type="submit">
+    </form>
+</div>
+
+
+{% endblock main-content %}

@@ -1,0 +1,16 @@
+<div class="container" style="text-align: center">
+    <h2>Add your Post Here! </h2>
+    <br>
+    <form method="POST" action="{% url 'addpost' %}" novalidate enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- {{form.as_p}}
+        <input class="btn btn-primary" type="submit" > -->
+        {% for fm in form %}
+        <div class="container">
+            {{fm.label}}
+            {{fm}}
+        </div>
+        {% endfor %}
+        <input class="btn btn-primary" type="submit">
+    </form>
+</div>

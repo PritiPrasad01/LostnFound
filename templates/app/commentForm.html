@@ -1,0 +1,31 @@
+<div class="container-fluid">
+	<div class="row justify-content-center"> <!-- center the form horizontally -->
+		<div class="col-sm-12 col-xl-6">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card" style="align-items: center;">
+						<div class="card-header pb-0">
+							<h5>Please provide the input</h5>
+						</div>
+						<div class="card-body">
+                            <form class="form-group" method="POST" action="{% url 'add_comment_to_post' pk %}">
+                                {% csrf_token %}
+                                {% for fm in form %}
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ fm.label }}</label>
+                                        <div class="input-group">
+                                            {{ fm }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="card-footer pt-0" style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary" id="submit">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

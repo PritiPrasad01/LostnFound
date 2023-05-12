@@ -1,0 +1,87 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+{% block main-content %}
+<div class="container">
+  <br>
+  <button data-href="{% url 'addpost' %}" id="add-post" class="btn btn-outline-success">Add New
+    Post
+  </button>
+  <div class="m-auto content max-width-1 my-2">
+    <div class="content-left">
+      <h1>Lost & Found</h1>
+      <p>Our goal is to return the owners their lost items.Lost and found management system, manage and track the
+        lost and found items. This website is developed for the students, faculty members and visitors of the
+        universities yet anyone is able to use it.</p>
+      <p>Many things are lost in the day to day life. Most of the people found or lost things. For a small reason,
+        we contact to other people. People are being responsible and know their duties. So this system will help
+        users to post the things they found and lost things.</p>
+
+    </div>
+    <div class="content-right">
+      <img src="{% static 'app/images/GIRL.jpg' %}" alt="iBlog">
+    </div>
+    <!-- </div>
+    <a href="{% url 'addpost' %}"><h1>Post Here !</h1></a> 
+    <div class="content-right">
+        <img src="{% static 'app/images/home.svg' %}" alt="iBlog">
+    </div> -->
+  </div>
+
+  <div class="max-width-1 m-auto">
+    <div class="text-success">
+      <hr>
+    </div>
+  </div>
+
+</div>
+<!--Add Post Modal-->
+<div class="modal fade" id="addPostModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Add Modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <!-- Modal content will be loaded here -->
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main-content %}
+
+
+{% block script-content %}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(document).ready(function () {
+    // Handle successful form submission
+    {% if messages %}
+    {% for message in messages %}
+    alert('{{ message }}');
+    {% endfor %}
+    {% endif %}
+  });
+
+  // Show add SNMP string modal
+  $('#add-post').click(function () {
+    $.ajax({
+      url: $(this).attr('data-href'),
+      success: function (response) {
+        console.log(response);
+        $('#addPostModal .modal-body').html(response);;
+        $('#addPostModal').modal('show');
+      }
+    });
+  });
+
+  // Hide modal when close button is clicked
+  $('.modal .close').click(function () {
+    $(this).closest('.modal').modal('hide');
+  });
+</script>
+
+{% endblock script-content %}

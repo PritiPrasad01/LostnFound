@@ -1,0 +1,121 @@
+{% extends 'app/base.html' %} 
+{% load static %} 
+{% block title %}Found{%endblock title %} 
+{% block styles %}
+
+<style>
+  .item {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    padding: 15px;
+    background-color: #fff;
+    transition: transform 0.3s ease-out;
+    border-radius: 10px;
+  }
+
+  .item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .item img {
+    object-fit: cover;
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+
+  .item .fw-bold {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .btn {
+    text-decoration: none !important;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .page-link {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 0 5px;
+  }
+
+  .page-link:hover {
+    background-color: #f8f9fa;
+    color: #333;
+    border-color: #dee2e6;
+  }
+
+  .page-link.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+  }
+
+  .page-item.disabled .page-link {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+</style>
+{% endblock styles %} {% block main-content %}
+
+<div class="container my-5">
+  <div class="row">
+    {% if found %}
+      {% for found in found %}
+      <div class="col-sm-6 col-md-4 mb-4">
+        <a href="{% url 'details' found.id %}" class="btn">
+          <div class="item">
+            <img src="{{found.product_image.url}}" height="250" alt="image" class="" />
+            <div class="fw-bold">{{found.title}}</div>
+            <div class="fw-bold">
+              {{found.location}}
+              <small style="color: green" class="fw-dark">{{found.user}}</small>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    {% else %} 
+      <h2>No Found Posts Yet.</h2>
+    {% endif %}
+  </div>
+  <div class="pagination" style="text-align: center;align-items: center;justify-content: center;">
+    {% if founds.has_previous %}
+        <a class="page-link" href="?page=1">&laquo;</a>
+        <a class="page-link" href="?page={{ founds.previous_page_number }}">&lsaquo;</a>
+    {% else %}
+    <span class="page-link disabled">&laquo;</span>
+    <span class="page-link disabled">&lsaquo;</span>
+    {% endif %} 
+    {% for page in founds.paginator.page_range %} 
+        {% if founds.number == page %}
+            <span class="page-link active">{{ page }}</span>
+        {% elif page > founds.number|add:'-3' and page < founds.number|add:'3' %}
+            <a class="page-link" href="?page={{page}}">{{ page }}</a>
+        {% endif %} 
+    {% endfor %} 
+    {% if founds.has_next %}
+        <a class="page-link" href="?page={{ founds.next_page_number }}">&rsaquo;</a>
+        <a class="page-link" href="?page={{ founds.paginator.num_pages }}">&raquo;</a>
+    {% else %}
+        <span class="page-link disabled">&rsaquo;</span>
+        <span class="page-link disabled">&raquo;</span>
+    {% endif %}
+  </div>
+</div>
+{% endblock main-content %}

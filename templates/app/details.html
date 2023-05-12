@@ -1,0 +1,220 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Details{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-sm-6 text-center">
+      <!-- <img src="{{ detail.product_image.url }}" alt="image"
+        class="img-fluid img-thumbnail object-fit-sm-contain border rounded" /> -->
+      <figure class="figure">
+        <img src="{{ detail.product_image.url }}" alt="image" style="height: 300px; width: 200px;"
+          class="figure-img img-thumbnail img-fluid object-fit-sm-contain rounded">
+        <figcaption class="figure-caption">{{ detail.title }}</figcaption>
+      </figure>
+    </div>
+
+    <div class="col-sm-5 offset-sm-1">
+      <!-- <div class="row">
+        <div class="col-sm-3"> -->
+      <!-- <a class="text-muted" href="{% url 'user_detail' detail.user %}">
+        <h4>{{ detail.user }}:</h4>
+      </a> -->
+      <ul class="list-unstyled">
+        <li class="d-grid">
+          <a href="{% url 'user_detail' detail.user %}">
+            <img src="{{ detail.user.profile.profile_pic.url }}" alt="Profile Pic" class="img-fluid rounded-circle me-3"
+              style="width: 30px; height: 30px;">
+            {{ detail.user }}</a>
+        </li>
+      </ul>
+      <hr />
+      <h5> <strong>Description :</strong> {{ detail.description }}</h5>
+      <h5><strong>Location :</strong> {{ detail.location }}</h5>
+      <br>
+      {% if user.is_authenticated %}
+      <button id="add-comment" data-href="{% url 'add_comment_to_post' detail.id %}" class="btn btn-outline-primary">Add
+        Comment</button>
+      <button id="alert-owner" data-href="{% url 'alert_owner' detail.id %}" class="btn btn-outline-danger">Alert
+        Owner</button>
+      {% endif %}
+      <h3>Comments:</h3>
+      {% if page_obj %} {% for comment in page_obj %}
+      <div class="card my-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-7">
+              <a href="{% url 'user_detail' comment.user %}">
+                <h5 class="card-title">{{ comment.user }}</h5>
+              </a>
+              <p class="card-text">{{ comment.text }}</p>
+              <div class="row">
+                <div class="col-sm-6">
+                  <h5>Likes: {{ comment.likes }}</h5>
+                </div>
+                <div class="col-sm-6">
+                  <button type="button" class="btn btn-secondary btn-sm" data-toggle="collapse"
+                    data-target="#reply-form-{{ comment.id }}" aria-expanded="false"
+                    aria-controls="reply-form-{{ comment.id }}">
+                    Reply
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-5">
+              <div class="comment-meta">
+                <span class="text-muted">{{ comment.created_at }}</span>
+                <i class="far fa-heart" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <div class="collapse mt-3" id="reply-form-{{ comment.id }}">
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'add_reply_to_comment' comment.id %}">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="form-group">
+                        <textarea class="form-control" id="reply-text-{{ comment.id }}" name="text" rows="2"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <button type="submit" class="btn btn-primary btn-sm">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                {% else %}
+                <p>You must be logged in to reply to a comment.</p>
+                {% endif %} {% for reply in comment.replies.all %}
+                <div class="card my-3 ml-12">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <a href="{% url 'user_detail' reply.user %}">
+                          <h6 class="card-title">{{ reply.user }}</h6>
+                        </a>
+                        <p class="card-text">{{ reply.text }}</p>
+                      </div>
+                      <div class="col-sm-5 offset-sm-1">
+                        <div class="comment-meta">
+                          <span class="text-muted">{{ reply.created_at }}</span>
+                          <i class="far fa-heart" aria-hidden="true"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <p>No comments yet.</p>
+      {% endif %} {% if page_obj.has_previous or page_obj.has_next %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+          </li>
+          {% endif %} {% for i in page_obj.paginator.page_range %}
+          {% if page_obj.number == i %}
+          <li class="page-item active">
+            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+          </li>
+          {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %} <li class="page-item">
+            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+            {% endif %} {% endfor %} {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!--Add Comment Modal-->
+<div class="modal fade" id="addCommentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Add Modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <!-- Modal content will be loaded here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Alert Confirm Modal-->
+<div class="modal fade" id="alertConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Alert Confirm</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <h5>Are you sure ? You want to alert the owner.</h5>
+        <div class="row" style="display: flex;">
+          <div id="confirm-alert-button"></div>
+          <button class="btn btn-outline-primary btn-block close" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main-content %}
+
+
+{% block script-content %}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(document).ready(function () {
+    // Handle successful form submission
+    {% if messages %}
+    {% for message in messages %}
+    alert('{{ message }}');
+    {% endfor %}
+    {% endif %}
+  });
+
+  // Show add SNMP string modal
+  $('#add-comment').click(function () {
+    $.ajax({
+      url: $(this).attr('data-href'),
+      success: function (response) {
+        console.log(response);
+        $('#addCommentModal .modal-body').html(response);
+        $('#addCommentModal').modal('show');
+      }
+    });
+  });
+  $('#alert-owner').click(function () {
+    var url = $(this).attr('data-href');
+    console.log(url);
+    $('#confirm-alert-button').html(`<a href="${url}"><button class='btn btn-outline-danger btn-block'>
+            Confirm
+          </button></a>`)
+    $('#alertConfirmModal').modal('show');
+  });
+  // Hide modal when close button is clicked
+  $('.modal .close').click(function () {
+    $(this).closest('.modal').modal('hide');
+  });
+</script>
+
+{% endblock script-content %}

@@ -1,0 +1,151 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block main-content %}
+<style>
+  .card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .card-img-top {
+    width: 100%;
+    height: auto;
+  }
+</style>
+<div class="container my-5">
+  <div class="row my-3">
+    <h3 class="mb-5">Welcome, {{ user.username}}</h3>
+    <div class="col-sm-3 border-end">
+      <img src="{{ request.user.profile.profile_pic.url }}" alt="Profile Pic" class="img-fluid rounded-circle mb-3"
+        style="width: 200px; height: 200px;">
+      <ul class="list-unstyled">
+        <li class="d-grid">
+          <a href="{% url 'editprofile' %}" class="btn btn-outline-success ps-1">Edit profile</a>
+        </li>
+      </ul>
+    </div>
+    <!-- <div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4" style="text-align: center;">
+      <img src="{{ request.user.profile.profile_pic.url }}" alt="Profile Pic" class="img-fluid rounded-circle mb-3"
+        style="width: 200px; height: 200px;">
+      <div class="container">
+        <h2 class="h4 font-weight-bold">{{ request.user }}</h2>
+      </div>
+      <div class="container">
+        <a href="{% url 'editprofile' %}"><button class="btn btn-primary btn-block">Edit Profile</button></a>
+      </div>
+    </div> -->
+
+
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card bg-light mb-3">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-user fa-lg"></i> Name</h5>
+              <p class="card-text">{{ request.user.first_name }} {{ request.user.last_name }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-light mb-3">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-envelope fa-lg"></i> Email</h5>
+              <p class="card-text">{{ request.user.email }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-light mb-3">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-phone fa-lg"></i> Phone Number</h5>
+              <p class="card-text">{{ request.user.profile.phone_num }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-light mb-3">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-venus-mars fa-lg"></i> Gender</h5>
+              <p class="card-text">{{ request.user.profile.gender }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-light mb-3">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-birthday-cake fa-lg"></i> DOB</h5>
+              <p class="card-text">{{ request.user.profile.birth_date }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-success">
+    <hr>
+  </div>
+  <h2>My Posts</h2>
+  <div class="container">
+    <!-- <div class="row">
+      {% if posts %}
+      {% for post in posts %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card" style="align-items: center;">
+          <a href="{% url 'details' post.id %}">
+            <img class="card-img-top" src="{{ post.product_image.url }}" alt="Card image cap"
+              style="width: 200px; height: 200px;">
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="alert alert-info" role="alert">
+        <strong>No posts yet!</strong> You haven't created any posts yet. <a href="{% url 'addpost' %}">Create one
+          now</a>.
+      </div>
+      {% endif %}
+    </div> -->
+
+    <div class="row">
+      {% if posts %}
+      {% for post in posts %}
+      <div class="col-sm-3 border border-success-subtle m-2">
+
+        <!-- <span class="position-absolute top-0 start-100 translate-middle  ">
+          <i class="fa-solid fa-trash pointer pe-5 pt-5" style="color: #ed3e12; cursor: pointer;"></i>
+          <span class="visually-hidden">Delete</span>
+        </span> -->
+        <a href="{% url 'details' post.id %}" class="btn">
+          <h5 class="my-1">{{ post.title }}</h5>
+
+          <p class="text-muted ">Description : {{ post.description }}</p>
+          <small class="text-muted ">Posted on : {{ post.created_at }}</small>
+        </a>
+        <!-- <i class="fa-solid fa-trash" style="color: #ed3e12;"></i> -->
+
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="alert alert-info" role="alert">
+        <strong>No posts yet!</strong> You haven't created any posts yet. <a href="{% url 'addpost' %}">Create one
+          now</a>.
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+</div>
+{% endblock main-content %}

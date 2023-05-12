@@ -1,0 +1,77 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Login{% endblock title %}
+{% block main-content %}
+
+
+
+<div class="container text-center">
+  <div class="row justify-content-md-center">
+    {% if otp %}
+
+    <div class="col-sm-6 card mt-3 mb-5 p-3 shadow-lg">
+      <h2>Verify your email</h2>
+      <div class="text-success">
+        <hr>
+      </div>
+      <form method="POST">
+        {% if messages %} {% for message in messages %}
+        <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5" {% endif %}>
+          {{message}}
+        </p>
+        {% endfor %}
+        {% endif %}
+        {% csrf_token %}
+        <input type="hidden" name="user" value="{{user.username}}" />
+        <div class="form-group">
+          <span class="input-group-text">otp</span>
+          <input type="text" placeholder="Enter Your OTP" aria-label="OTP" name="otp" />
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary  btn-sm" type="submit">Verify</button>
+          <small class="float-right text-muted"><i><a href="#" class="text-dark"
+                onclick="ReSendOTP('{{user.username}}','resendOTPmess')"><i
+                  id="resendOTPmess">Resend</i>OTP</a></i></small>
+        </div>
+      </form>
+    </div>
+    {% else %}
+
+
+    <div class="col-sm-6 card mt-3 mb-5 p-3 shadow-lg">
+      <h2>Login</h2>
+      <div class="text-success">
+        <hr>
+      </div>
+      <form method="POST" novalidate>
+        {% if messages %} {% for message in messages %}
+        <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5" {% endif %}>
+          {{message}}
+        </p>
+        {% endfor %} {% endif %} {% csrf_token %}
+        {% for fm in form %}
+        <div class="form-group">
+          {{fm.label_tag}} {{fm}}
+
+          <small class="text-danger">{{fm.errors|striptags}}</small>
+          <br>
+        </div>
+        {% endfor %}
+        <p>
+          <a class="text-decoration-none" href="{% url 'password_reset' %}">Forget Password ?</a>
+        </p>
+        <input type="submit" value="Log In" class="btn btn-primary  btn-sm" />
+      </form>
+      <div class="text-success">
+        <hr>
+      </div>
+      <p>
+        Don't have an account?
+        <a href="{% url 'signup' %}" class="text-decoration-none">Sign Up</a>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock main-content %}

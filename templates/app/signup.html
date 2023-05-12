@@ -1,0 +1,81 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}SignUp{% endblock title %}
+{% block main-content %}
+<div class="container ">
+  <div class="row justify-content-md-center">
+    {% if otp %}
+    <div class="col-sm-6 card mt-3 mb-5 p-3 shadow-lg text-center">
+      <h2>Verify your email</h2>
+      <div class="text-success">
+        <hr>
+      </div>
+      <form method="POST" action="" enctype="multipart/form-data">
+        {% if messages %} {% for message in messages %}
+        <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5" {% endif %}>
+          {{message}}
+        </p>
+        {% endfor %} {% endif %} {% csrf_token %}
+        <input type="hidden" name="user" value="{{user.username}}" />
+        <div class="form-group">
+          <!-- <p class="mb=3">OTP</p> -->
+          <input type="text" placeholder="Enter Your OTP" aria-label="OTP" name="otp" />
+          <div>
+            <button class="btn btn-primary  mt-3 btn-sm " type="submit">Verify</button>
+          </div>
+
+
+        </div>
+      </form>
+      <div class="text-success">
+        <hr>
+      </div>
+      <p>
+        <i><a href="#" class="text-decoration-none" onclick="ReSendOTP('{{user.username}}','resendOTPmess')"><i
+              id="resendOTPmess">Resend</i>OTP</a></i>
+      </p>
+      <!-- <small class="float-right text-muted"><i><a href="#" class="text-dark" onclick="ReSendOTP('{{user.username}}','resendOTPmess')"><i id="resendOTPmess">Resend</i>OTP</a></i></small> -->
+
+    </div>
+
+    {% else %}
+    <div class="col-sm-8 card mt-3 mb-5 p-3 shadow-lg">
+      <h2 class="text-center">Sign Up</h2>
+      <div class="text-success">
+        <hr>
+      </div>
+      <form method="POST" novalidate class="ps-3" enctype="multipart/form-data">
+        {% if messages %} {% for message in messages %}
+        <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5" {% endif %}>
+          {{message}}
+        </p>
+        {% endfor %} {% endif %} {% csrf_token %}
+        {% for fm in form %}
+        <div class="form-group">
+          {{fm.label_tag}} {{fm}}
+          <!-- {% if fm.name == 'first_name' %}
+          {{ fm.label_tag }}
+          {{ fm }}
+          {% endif %} -->
+          <small class="text-danger">{{fm.errors|striptags}}</small>
+          <br>
+        </div>
+        {% endfor %}
+        <div class="position-relative ">
+          <input type="submit" value="Submit"
+            class="btn btn-primary  btn-sm position-absolute top-50 start-50 translate-middle " />
+        </div>
+
+      </form>
+      <div class="text-success mt-3">
+        <hr>
+      </div>
+      <p>
+        Already have an account?
+        <a href="{% url 'login' %}" class="text-decoration-none">Log In</a>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock main-content %}
