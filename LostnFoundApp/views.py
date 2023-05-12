@@ -203,17 +203,16 @@ def search(request):
         posts = Post.objects.none()
         users = User.objects.none()
     else:
-        post_fields = ['id','title', 'description', 'location', 'category','product_image']
-        posts = Post.objects.filter(title__icontains=query).values(*post_fields)
-        posts = posts.union(Post.objects.filter(description__icontains=query).values(*post_fields))
-        posts = posts.union(Post.objects.filter(location__icontains=query).values(*post_fields))
-        user_fields = ['id','username', 'email', 'first_name','profile', 'last_name']
-        users = User.objects.filter(username__icontains=query).values(*user_fields)
+        postTitle = Post.objects.filter(title__icontains=query)
+        postDescription = Post.objects.filter(description__icontains=query)
+        postLocation = Post.objects.filter(location__icontains=query)
+        posts = postTitle.union(postDescription,postLocation)
+        users = User.objects.filter(username__icontains=query)
     if (posts.exists() or users.exists()):
         context = {'posts': posts, 'users': users, 'query': query}
         return render(request, 'app/search.html', context)
     else:
-        messages.warning(request, "No search results found. Please refine your query.")
+        # messages.warning(request, "No search results found. Please refine your query.")
         context = {'query': query}
         return render(request, 'app/search.html', context)
 
