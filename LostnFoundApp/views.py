@@ -118,7 +118,6 @@ def signup(request):
         form = SignUpForm()
     return render(request,'app/signup.html',{'form':form})
 
-@login_required(login_url='/login/')
 def addpost(request):
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -138,7 +137,8 @@ def addpost(request):
             form = PostForm()
         context = {'form':form}
         return render(request,'app/addpost.html',context)
-    return redirect('login')
+    else:
+        return HttpResponse("Please login to add new posts")
 
 def lost(request):
     lost = Post.objects.filter(category='L')

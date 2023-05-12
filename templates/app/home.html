@@ -40,7 +40,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Add Modal</h4>
+        <h4 class="modal-title" id="myModalLabel">Add Posts</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
       </div>
@@ -60,9 +60,9 @@
   $(document).ready(function () {
     // Handle successful form submission
     {% if messages %}
-    {% for message in messages %}
-    alert('{{ message }}');
-    {% endfor %}
+      {% for message in messages %}
+        alert('{{ message }}');
+      {% endfor %}
     {% endif %}
   });
 
