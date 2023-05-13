@@ -16,6 +16,9 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.views.generic import CreateView
 from django.db.models import Q
+from PIL import Image
+import io
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 # Create your views here.
 
@@ -96,7 +99,20 @@ def signup(request):
             user.profile.birth_date = form.cleaned_data.get('birth_date')
             user.profile.phone_num = form.cleaned_data.get('phone_num')
             user.profile.gender = form.cleaned_data.get('gender')
-            user.profile.profile_pic = form.cleaned_data.get('profile_pic')
+            image = form.cleaned_data.get('profile_pic')
+            if image.size > 500000:
+                img = Image.open(image)
+
+                # convert RGBA to RGB mode
+                if img.mode == 'RGBA':
+                    img = img.convert('RGB')
+
+                output = io.BytesIO()
+                img.save(output, format='JPEG', quality=50)
+                output.seek(0)
+                image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % image.name.split('.')[0], 'image/jpeg', output.getbuffer().nbytes, None)
+
+            user.profile.profile_pic = image
             user.save()
             username = form.cleaned_data.get('username')
             user = User.objects.get(username=username)
@@ -118,9 +134,7 @@ def signup(request):
         form = SignUpForm()
     return render(request,'app/signup.html',{'form':form})
 
-from PIL import Image
-import io
-from django.core.files.uploadedfile import InMemoryUploadedFile
+
 
 
 def addpost(request):
