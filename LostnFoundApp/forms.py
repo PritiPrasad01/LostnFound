@@ -53,7 +53,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ['user']
+        exclude = ['user','created_at']
 
 
 class UserUpdateForm(forms.ModelForm):

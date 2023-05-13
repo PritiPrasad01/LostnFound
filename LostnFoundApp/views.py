@@ -118,27 +118,50 @@ def signup(request):
         form = SignUpForm()
     return render(request,'app/signup.html',{'form':form})
 
+from PIL import Image
+import io
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+
 def addpost(request):
     if request.user.is_authenticated:
         if request.method == "POST":
-            form = PostForm(request.POST,request.FILES)
+            form = PostForm(request.POST, request.FILES)
             if form.is_valid():
                 data = Post()
                 data.user = request.user
-                data.title= form.cleaned_data['title']
-                data.location= form.cleaned_data['location']
-                data.description= form.cleaned_data['description']
+                data.title = form.cleaned_data['title']
+                data.location = form.cleaned_data['location']
+                data.description = form.cleaned_data['description']
                 data.category = form.cleaned_data['category']
-                data.product_image = form.cleaned_data['product_image']
+
+                # resize and compress image
+                image = form.cleaned_data['product_image']
+                if image.size > 500000:
+                    img = Image.open(image)
+
+                    # convert RGBA to RGB mode
+                    if img.mode == 'RGBA':
+                        img = img.convert('RGB')
+
+                    output = io.BytesIO()
+                    img.save(output, format='JPEG', quality=50)
+                    output.seek(0)
+                    image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % image.name.split('.')[0], 'image/jpeg', output.getbuffer().nbytes, None)
+
+                data.product_image = image
                 data.save()
                 messages.success(request, "Post added successfully.")
                 return redirect('posts')
         else:
             form = PostForm()
-        context = {'form':form}
-        return render(request,'app/addpost.html',context)
+        context = {'form': form}
+        return render(request, 'app/addpost.html', context)
     else:
         return HttpResponse("Please login to add new posts")
+
+
+
 
 def lost(request):
     lost = Post.objects.filter(category='L')
@@ -158,6 +181,12 @@ def posts(request):
 
 def about(request):
     return render(request,'app/about.html')
+
+def privacy(request):
+    return render(request,'app/privacy.html')
+
+def instructions(request):
+    return render(request,'app/instructions.html')
 
 def details(request, pk):
     detail = Post.objects.get(pk=pk)

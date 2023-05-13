@@ -11,8 +11,9 @@ CATEGORY_CHOICES = (
 class Post(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     title = models.CharField(max_length=40)
-    location = models.TextField(max_length=30)
-    description = models.TextField(max_length=100)
+    location = models.CharField(max_length=30)
+    color = models.CharField(max_length=30,blank=True)
+    description = models.CharField(max_length=100)
     category = models.CharField(choices=CATEGORY_CHOICES,max_length=2)
     product_image = models.ImageField(null=True,blank = True,upload_to='productimg')
     created_at = models.DateTimeField(default=timezone.now)

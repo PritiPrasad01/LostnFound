@@ -20,6 +20,8 @@ urlpatterns =[
     path('found/',views.found,name='found'),
     path('posts/',views.posts,name = 'posts'),
     path('about/',views.about,name='about'),
+    path('privacy/',views.privacy,name='privacy'),
+    path('instructions/',views.instructions,name='instructions'),
     path('search/',views.search,name = 'search'),
 
     path('passwordchangedone/',auth_views.PasswordChangeDoneView.as_view(template_name='app/passwordchangedone.html'),name = 'passwordchangedone'),

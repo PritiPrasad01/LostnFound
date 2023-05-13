@@ -1,16 +1,51 @@
-<div class="container" style="text-align: center">
-    <h2>Add your Post Here! </h2>
-    <br>
+{% block styles %}
+
+<style>
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+</style>
+{% endblock styles %}
+<br>
+<div class="col-sm-12  mt-3 mb-5 p-3 ">
+    <h2 class="text-center">Add your Post Here!</h2>
+    <div class="text-success">
+        <hr>
+    </div>
     <form method="POST" action="{% url 'addpost' %}" novalidate enctype="multipart/form-data">
         {% csrf_token %}
-        <!-- {{form.as_p}}
-        <input class="btn btn-primary" type="submit" > -->
         {% for fm in form %}
-        <div class="container">
+        <div class="form-group">
             {{fm.label}}
             {{fm}}
         </div>
         {% endfor %}
-        <input class="btn btn-primary" type="submit">
+        <div class="position-relative ">
+            <input type="submit" value="Submit"
+                class="btn btn-primary  btn-sm position-absolute top-50 start-50 translate-middle " />
+        </div>
+        <!-- <input class="btn btn-primary" type="submit"> -->
     </form>
 </div>

@@ -4,9 +4,12 @@
 {% block main-content %}
 <div class="container">
   <br>
-  <button data-href="{% url 'addpost' %}" id="add-post" class="btn btn-outline-success">Add New
-    Post
-  </button>
+  <div class="conatiner text-center">
+    <button data-href="{% url 'addpost' %}" id="add-post" class="btn btn-outline-success">Add New
+      Post
+    </button>
+  </div>
+
   <div class="m-auto content max-width-1 my-2">
     <div class="content-left">
       <h1>Lost & Found</h1>
@@ -33,17 +36,63 @@
       <hr>
     </div>
   </div>
-
+  <div class="banner d-flex align-items-center"
+    style="margin: 0; padding: 0; height: 20vh; background: #ee9ca7;background: -webkit-linear-gradient(to right, #fff2f4, #e1b7b8);background: linear-gradient(to right, #fff2f4, #e1b7b8);">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-sm-9 text-center">
+          <h3>Your personal information will not be disclosed with anyone.</h3>
+        </div>
+        <div class="col-lg-3 col-sm-3 text-center">
+          <!-- <button>Read More</button> -->
+          <a href="{% url 'privacy' %}" class="text-muted"> <button class="btn btn-outline-dark btn-lg">Read More
+            </button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="max-width-1 m-auto">
+    <div class="text-success">
+      <hr>
+    </div>
+  </div>
+  <div class="container ">
+    <h1 class="my-4">
+      Step-By-Step Process
+    </h1>
+    <ul>
+      <li class="my-3"><i class="fa-solid fa-check mx-1"></i>
+        Log into your account or Sign Up if you are a new user.
+      </li>
+      <li class="my-3"><i class="fa-solid fa-check mx-1"></i>
+        Enter lost or found item details (e.g., item lost or found, category, photos, date, time, etc).
+      </li>
+      <li class="my-3"><i class="fa-solid fa-check mx-1"></i>
+        Review details entered and submit the lost or found item report.
+      </li>
+      <li class="my-3"><i class="fa-solid fa-check mx-1"></i>
+        Receive notifications when someone finds your item or the owner wants to connect with you.
+      </li>
+      <li class="my-3"><i class="fa-solid fa-check mx-1"></i>
+        Happy Connecting
+      </li>
+    </ul>
+  </div>
 </div>
+
+
+
+
+
 <!--Add Post Modal-->
 <div class="modal fade" id="addPostModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Add Posts</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-            aria-hidden="true">&times;</span></button>
-      </div>
+      <!-- <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel">Add Posts</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      </div> -->
       <div class="modal-body">
         <!-- Modal content will be loaded here -->
       </div>
@@ -60,9 +109,9 @@
   $(document).ready(function () {
     // Handle successful form submission
     {% if messages %}
-      {% for message in messages %}
-        alert('{{ message }}');
-      {% endfor %}
+    {% for message in messages %}
+    alert('{{ message }}');
+    {% endfor %}
     {% endif %}
   });
 
