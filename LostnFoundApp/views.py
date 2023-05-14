@@ -148,6 +148,7 @@ def addpost(request):
                 data.location = form.cleaned_data['location']
                 data.description = form.cleaned_data['description']
                 data.category = form.cleaned_data['category']
+                # data.product_image = form.cleaned_data['product_image']
 
                 # resize and compress image
                 image = form.cleaned_data['product_image']

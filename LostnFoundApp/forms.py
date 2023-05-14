@@ -14,8 +14,8 @@ GENDER_CHOICES = (
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(label='First Name')
     last_name = forms.CharField(label='Last Name')
-    password1 = forms.CharField(label='Password')
-    password2 = forms.CharField(label='Confirm Password')
+    password1 = forms.CharField(label='Password',widget=forms.PasswordInput())
+    password2 = forms.CharField(label='Confirm Password',widget=forms.PasswordInput())
     email = forms.CharField(required=True)
     birth_date = forms.DateField(help_text='Required. Format: YYYY-MM-DD')
     phone_num = forms.IntegerField(max_value=9999999999,min_value=1000000000)
@@ -29,7 +29,6 @@ class SignUpForm(UserCreationForm):
             'gender','password1','password2','profile_pic'
             ]
         labels = {'email':'Email'}
-        # widgets = {'username':forms.TextInput(attrs={'class':'form-control'})}
 
 class LoginForm(AuthenticationForm):
     username = UsernameField(widget=forms.TextInput(attrs={'autofocus':True,'class':'form-control'}))

@@ -84,9 +84,7 @@
 
     {% if lost %}
     {% for lost in lost %}
-
     <div class="col-sm-6 col-md-3 mb-4">
-
       <a href="{% url 'details' lost.id %}" class="btn">
         <div class="item">
           <img src="{{lost.product_image.url}}" style="height: 300px; width: 200px;" alt="image"
@@ -94,7 +92,7 @@
           <div class="fw-bold">{{lost.title}}</div>
           <div class="fw-bold">
             <!-- {{lost.location}} -->
-            <small style="color: green" class="fw-dark">{{lost.user}}</small>
+            <small class="fw-dark">Posted By : <em>{{lost.user}}</em></small>
           </div>
         </div>
       </a>
@@ -108,14 +106,14 @@
 
     {% if found %}
     {% for found in found %}
-    <div class="col-sm-6 col-md-4 mb-4">
+    <div class="col-sm-6 col-md-3 mb-4">
       <a href="{% url 'details' found.id %}" class="btn">
         <div class="item">
           <img src="{{found.product_image.url}}" height="250" alt="image" class="" />
           <div class="fw-bold">{{found.title}}</div>
           <div class="fw-bold">
-            {{found.location}}
-            <small style="color: green" class="fw-dark">{{found.user}}</small>
+            <!-- {{found.location}} -->
+            <small class="fw-dark">Posted By : <em>{{found.user}}</em></small>
           </div>
         </div>
       </a>

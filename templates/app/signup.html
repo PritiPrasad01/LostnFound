@@ -2,8 +2,8 @@
 {% load static %}
 {% block title %}SignUp{% endblock title %}
 {% block main-content %}
-<div class="container ">
-  <div class="row justify-content-md-center">
+<div class="container">
+  <div class="row my-2 justify-content-md-center">
     {% if otp %}
     <div class="col-sm-6 card mt-3 mb-5 p-3 shadow-lg text-center">
       <h2>Verify your email</h2>
@@ -18,13 +18,11 @@
         {% endfor %} {% endif %} {% csrf_token %}
         <input type="hidden" name="user" value="{{user.username}}" />
         <div class="form-group">
-          <!-- <p class="mb=3">OTP</p> -->
-          <input type="text" placeholder="Enter Your OTP" aria-label="OTP" name="otp" />
-          <div>
-            <button class="btn btn-primary  mt-3 btn-sm " type="submit">Verify</button>
+          <label for="otp">Enter Your OTP</label>
+          <input type="text" id="otp" class="form-control" name="otp" />
+          <div class="mt-3">
+            <button class="btn btn-primary btn-sm" type="submit">Verify</button>
           </div>
-
-
         </div>
       </form>
       <div class="text-success">
@@ -34,8 +32,6 @@
         <i><a href="#" class="text-decoration-none" onclick="ReSendOTP('{{user.username}}','resendOTPmess')"><i
               id="resendOTPmess">Resend</i>OTP</a></i>
       </p>
-      <!-- <small class="float-right text-muted"><i><a href="#" class="text-dark" onclick="ReSendOTP('{{user.username}}','resendOTPmess')"><i id="resendOTPmess">Resend</i>OTP</a></i></small> -->
-
     </div>
 
     {% else %}
@@ -51,20 +47,75 @@
         </p>
         {% endfor %} {% endif %} {% csrf_token %}
         {% for fm in form %}
-        <div class="form-group">
-          {{fm.label_tag}} {{fm}}
-          <!-- {% if fm.name == 'first_name' %}
-          {{ fm.label_tag }}
-          {{ fm }}
-          {% endif %} -->
-          <small class="text-danger">{{fm.errors|striptags}}</small>
-          <br>
+        <div class="my-3">
+          <div class="row my-2">
+            <div class="col">
+              {{ form.first_name.label_tag }} {{ form.first_name }}
+              <small class="text-danger">{{ form.first_name.errors|striptags }}</small>
+            </div>
+            <div class="col">
+              {{ form.last_name.label_tag }} {{ form.last_name }}
+              <small class="text-danger">{{ form.last_name.errors|striptags }}</small>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col">
+              {{ form.username.label_tag }} {{ form.username }}
+              <small class="text-danger">{{ form.username.errors|striptags }}</small>
+            </div>
+            <div class="col">
+              {{ form.email.label_tag }} {{ form.email }}
+              <small class="text-danger">{{ form.email.errors|striptags }}</small>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col">
+              {{ form.password1.label_tag }} {{ form.password1 }}
+              <small class="text-danger">{{ form.password1.errors|striptags }}</small>
+            </div>
+            <div class="col">
+              {{ form.password2.label_tag }} {{ form.password2 }}
+              <small class="text-danger">{{ form.password2.errors|striptags }}</small>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col">
+              {{ form.phone_num.label_tag }} {{ form.phone_num }}
+              <small class="text-danger">{{ form.phone_num.errors|striptags }}</small>
+            </div>
+            <div class="col">
+              {{ form.birth_date.label_tag }} {{ form.birth_date}}
+              <small class="text-danger">{{ form.birth_date.errors|striptags }}</small>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col">
+              {{ form.gender.label_tag }} {{ form.gender }}
+              <small class="text-danger">{{ form.gender.errors|striptags }}</small>
+            </div>
+          </div>
+          <div class="row my-2">
+            <div class="col">
+              {{ form.profile_pic.label_tag }} {{ form.profile_pic }}
+              <small class="text-danger">{{ form.profile_pic.errors|striptags }}</small>
+            </div>
+          </div>
         </div>
-        {% endfor %}
         <div class="position-relative ">
           <input type="submit" value="Submit"
-            class="btn btn-primary  btn-sm position-absolute top-50 start-50 translate-middle " />
+            class="btn btn-outline-success  btn-sm position-absolute top-50 start-50 translate-middle " />
         </div>
+
+
+        <!-- <div class="form-group">
+          <label for="{{ fm.id_for_label }}">{{ fm.label }}</label>
+          {{ fm }}
+          <small class="text-danger">{{fm.errors|striptags}}</small>
+        </div>
+        {% endfor %}
+        <div class="position-relative">
+          <input type="submit" value="Submit" class="btn btn-primary btn-sm position-absolute top-50 start-50 translate-middle" />
+        </div> -->
 
       </form>
       <div class="text-success mt-3">
