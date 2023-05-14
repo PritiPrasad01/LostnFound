@@ -42,8 +42,8 @@ urlpatterns =[
 
     path('alert_owner/<int:pk>/',views.alert_owner,name="alert_owner"),
 
-     path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
-     path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT}),
+    path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
+    path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT}),
 
 ]
 
