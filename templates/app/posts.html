@@ -109,7 +109,8 @@
     <div class="col-sm-6 col-md-3 mb-4">
       <a href="{% url 'details' found.id %}" class="btn">
         <div class="item">
-          <img src="{{found.product_image.url}}" height="250" alt="image" class="" />
+          <img src="{{found.product_image.url}}" style="height: 300px; width: 200px;" alt="image"
+            class="img-thumbnail img-fluid object-fit-sm-contain rounded" />
           <div class="fw-bold">{{found.title}}</div>
           <div class="fw-bold">
             <!-- {{found.location}} -->
